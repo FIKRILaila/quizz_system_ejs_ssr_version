@@ -11,6 +11,8 @@ const db = mysql.createConnection({
     database:'quiz_system'
 });
 
+app.set('view engine', 'ejs')
+
 db.connect((err)=> {
     if(err) console.log(err);
     else{
@@ -18,6 +20,9 @@ db.connect((err)=> {
     }
 });
 
+app.use('/',require('./routes/route'))
+
 app.listen(8000,()=>{
     console.log('server stareted successfully');
 });
+
