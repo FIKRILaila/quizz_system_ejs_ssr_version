@@ -15,3 +15,20 @@ exports.dislpayUsers = (req,res) => {
         })
     });
 }
+
+exports.addUser = (req,res) => {
+    db.query("SELECT * FROM user", function (err, result, fields) {
+        if (err) throw err;
+        res.render('welcome',{
+            data: result
+        })
+    });
+}
+
+exports.loginUser = (req,res, next) => {
+    console.log(req.body.email);
+    var sql = "SELECT * FROM user WHERE email ='" + req.body.email + "'";
+    db.query(sql, function (err, result, fields) {
+        return result.length ? res.redirect('dashboard'):res.render('login',{error:{message:'email or password incorrect'}});
+    });
+};

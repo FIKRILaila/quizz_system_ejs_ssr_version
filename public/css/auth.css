@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Nova+Square&family=Outfit:wght@200;300;400;500;600&family=Roboto:wght@100;300;400;500&display=swap');
+*{
+    font-family: 'Nova Square', cursive;
+    font-family: 'Outfit', sans-serif;
+    font-family: 'Roboto', sans-serif;
+}
+.body-bg{
+    background: rgb(0, 0, 153);
+}
+
+form{
+    box-shadow:0 1px 5px white;
+}
+form h2{
+    color:rgb(0, 0, 153);
+}
+form a{
+    color:rgb(0, 0, 153);
+    text-decoration: none;
+}
+.submit{
+    font-weight: bold;
+    background-color:rgb(0, 0, 153);
+    color:white;
+    box-shadow: 0 1px 5px rgb(0, 0, 153);
+}

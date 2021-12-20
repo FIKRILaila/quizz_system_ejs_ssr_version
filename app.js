@@ -3,6 +3,9 @@ const express = require('express');
 const ejs = require('ejs');
 
 const app = express();
+app.set('view engine', 'ejs')
+app.use(express.static('public/'))
+app.use(express.urlencoded({ extended : true }))
 
 const db = mysql.createConnection({
     host: 'localhost',
@@ -11,7 +14,7 @@ const db = mysql.createConnection({
     database:'quiz_system'
 });
 
-app.set('view engine', 'ejs')
+
 
 db.connect((err)=> {
     if(err) console.log(err);
