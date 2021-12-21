@@ -13,26 +13,6 @@
   background-color: #000099;
 }
 
-.body-bg {
-  background: #000099;
-}
-
-.body-bg form {
-  box-shadow: 0 1px 5px white;
-}
-
-.body-bg form h2 {
-  color: #000099;
-}
-
-.body-bg form a {
-  color: #000099;
-  text-decoration: none;
-}
-
-.body-bg form .submit {
-  font-weight: bold;
+.welcome {
   background-color: #000099;
-  color: white;
-  box-shadow: 0 1px 5px #000099;
 }

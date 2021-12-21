@@ -1,0 +1,21 @@
+@import '__all';
+
+.body-bg{
+    background: $primary_color;
+    form{
+        box-shadow:0 1px 5px $secondary_color;
+        h2{
+            color:$primary_color;
+        }
+        a{
+            color:$primary_color;
+            text-decoration: none;
+        } 
+        .submit{
+            font-weight: bold;
+            background-color:$primary_color;
+            color:$secondary_color;
+            box-shadow: 0 1px 5px $primary_color;
+        }
+    }
+}

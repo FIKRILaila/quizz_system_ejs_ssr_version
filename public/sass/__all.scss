@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Nova+Square&family=Outfit:wght@200;300;400;500;600&family=Roboto:wght@100;300;400;500&display=swap');
+*{
+    font-family: 'Nova Square', cursive;
+    font-family: 'Outfit', sans-serif;
+    font-family: 'Roboto', sans-serif;
+}
+
+$primary-color: rgb(0, 0, 153);
+$secondary-color: white;
+
+.text-blue{
+    color:$primary-color;
+}
+.bg-blue{
+    background-color: $primary-color;
+}

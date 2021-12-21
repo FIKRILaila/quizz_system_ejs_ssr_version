@@ -13,19 +13,18 @@
 
     <div class="min-vh-100 body-bg">
         <div class="container d-flex justify-content-center pt-4">
-            <form action="/login" method="post" class="d-flex flex-column col-md-4 rounded p-4 bg-white">
+            <form action="/login" method="post" class="d-flex flex-column col-md-4 rounded m-4 p-4 bg-white">
                 <h2 class="text-center">Login</h2>
+                <% if(error.message){ %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= error.message %>
+                      </div>
+                <% } %>
                 <input type="email" name="email" id="email" class="form-control mb-4 mt-4" placeholder="Enter your email address" required>
-                <% if(error.username){ %>
-                    <div class="text-red-800 text-md"><%= error.username %></div>
-                <% } %>
                 <input type="password" name="password" id="password" class="form-control mb-4" placeholder="Enter your password" required>
-                <% if(error.password){ %>
-                    <div class="text-red-800 text-md"><%= error.password %></div>
-                <% } %>
-                <label for=""><input type="checkbox" name="" id=""> Remenber me</label>
+                <!-- <label for=""><input type="checkbox" name="" id=""> Remenber me</label> -->
                 <button type="submit" class="btn submit m-4">Login</button>
-                <a href="#" class="text-center">Don't have an account? Sign Up</a>
+                <!-- <a href="#" class="text-center">Don't have an account? Sign Up</a> -->
             </form>
         </div>
     </div>
