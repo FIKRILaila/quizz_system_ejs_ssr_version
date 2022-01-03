@@ -1,17 +1,35 @@
 const mysql = require('mysql');
 const express = require('express');
 const ejs = require('ejs');
-
+const path = require('path');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
 const app = express();
 app.set('view engine', 'ejs')
-app.use(express.static('public/'))
+const publicDirectory = path.join(__dirname, './public');
+app.use(express.static(publicDirectory))
 app.use(express.urlencoded({ extended : true }))
 
+//.env 
+const dotenv = require('dotenv')
+dotenv.config({path: './.env'})
+
+const oneDay = 1000 * 60 * 60 * 24;
+
+//session middleware
+app.use(session({
+    secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
+    saveUninitialized: true,
+    cookie: { maxAge: oneDay },
+    resave: false
+}))
+app.use(cookieParser());
+
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database:'quiz_system'
+    host: process.env.HOST,
+    user: process.env.USER,
+    password: process.env.PASSWORD,
+    database: process.env.DATABASE
 });
 
 

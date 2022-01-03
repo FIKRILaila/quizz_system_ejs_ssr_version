@@ -1,0 +1,50 @@
+<%- include('header'); -%>
+    
+    <div class="mt-4 container d-flex justify-content-end">
+        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">Nouveau</button>
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Nouveau Apprenant</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/register" method="post" class="d-flex flex-column rounded ">
+                    <input type="hidden" name="role" value="apprenant">
+                    <input type="hidden" name="render_page" value="apprenants">
+                    <input type="text" name="first_name" id="first_name" class="form-control mb-4" placeholder="first name" required>
+                    <input type="text" name="last_name" id="last_name" class="form-control mb-4" placeholder="last name" required>
+                    <input type="email" name="email" id="email" class="form-control mb-4" placeholder="email address" required>
+                    <input type="password" name="password" id="password" class="form-control mb-4" placeholder="password" required>
+                    <input type="password" name="confirmPassword" id="confirmPassword" class="form-control mb-4" placeholder="confirm password" required>
+                    <div class="d-flex justify-content-end">
+                        <a href="#" class="btn text-warning border border-warning m-2" data-bs-dismiss="modal">Annuler</a>
+                        <button type="submit" class="btn btn-warning m-2 text-white">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div>
+        </div> 
+    </div>
+
+    <% if(sucess.message){ %>
+        <div class="alert alert-sucess m-4" role="alert">
+            <%= sucess.message %>
+            </div>
+    <% } %>
+    <% if(error.message){ %>
+        <div class="alert alert-danger m-4" role="alert">
+            <%= error.message %>
+            </div>
+    <% } %>
+    
+    <script>
+        function addClass(){
+            document.querySelector('#apprenants').className += " active";
+        }
+        addClass();
+    </script>    
+<%- include('footer'); -%>

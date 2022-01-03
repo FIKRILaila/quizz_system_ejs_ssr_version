@@ -1,0 +1,23 @@
+<%- include('header'); -%>
+      <!-- content -->
+      <div class="container sm-shadow">
+        <div class="m-4 d-flex justify-content-end">
+            <button class="btn btn-warning" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                Nouveau
+            </button> 
+        </div>
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+                ...            
+            </div>
+        </div>
+        </div>
+
+<script>
+    function addClass(){
+        document.querySelector('#questions').className += " active";
+    }
+    addClass();
+</script>
+
+<%- include('footer'); -%>
