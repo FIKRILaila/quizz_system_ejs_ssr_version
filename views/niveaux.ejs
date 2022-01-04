@@ -1,0 +1,72 @@
+<%- include('header'); -%>
+<div class="container">
+    <% if(success){ %>
+        <div class="alert alert-success m-4" role="alert">
+            <%= success%>
+            </div>
+    <% } %>
+    <% if(error){ %>
+        <div class="alert alert-danger m-4" role="alert">
+            <%= error%>
+            </div>
+    <% } %>
+    <div class="shadow-sm mt-4 p-4">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                <!-- <th scope="col">#</th> -->
+                <th scope="col">Description</th>
+                <th scope="col">Min Points</th>
+                <th scope="col">Max Points</th>
+                <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% niveaux.forEach(function(niveau) { %>
+                    <tr>
+                        <!-- <th scope="row"><%= niveau.id %> </th> -->
+                        <td><%= niveau.name %></td>
+                        <td><%= niveau.min_points %></td>
+                        <td><%= niveau.max_points %></td>
+                        <td>
+                            <button type="button" class="btn btn-warning shadow-sm" data-bs-toggle="modal" data-bs-target="<%= '#edit_' + niveau.id %>"><i class="fas fa-edit"></i></button>
+                
+
+                            <div class="modal fade" id="<%= 'edit_' + niveau.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Modifier le niveau</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                
+                                    <form action="/update_niveau" method="post" class="d-flex flex-column rounded p-4">
+                                        <input type="hidden" name="niveau_id" value="<%= niveau.id %>">
+                                        <input type="text" value ="<%= niveau.name %>" name="description" id="description" class="form-control mb-4" disabled>
+                                        <input type="number" min="0" value="<%= niveau.min_points %>" name="min_points" id="min_points" class="form-control mb-4">
+                                        <input type="number" min="0" value="<%= niveau.max_points %>" name="max_points" id="max_points" class="form-control mb-4">
+                                        <div class="d-flex justify-content-end">
+                                            <a href="#" class="btn text-warning border border-warning m-2" data-bs-dismiss="modal">Annuler</a>
+                                            <button type="submit" class="btn btn-warning m-2 text-white">Enregistrer</button>
+                                        </div>
+                                    </form>
+                
+                                </div>
+                                </div>
+                            </div>
+                            </div> 
+                        </td>
+                    </tr>
+                <% }); %> 
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    function addClass(){
+        document.querySelector('#niveaux').className += " active";
+    }
+    addClass();
+</script>
+<%- include('footer'); -%>

@@ -1,5 +1,7 @@
 const express = require('express');
 const userController = require('../controllers/users'); 
+const niveauController = require('../controllers/niveaux'); 
+const sujetController = require('../controllers/sujets'); 
 const router = express.Router();
 
 const auth = require('../middleware/auth');
@@ -9,12 +11,16 @@ router.get('/',(req, res) => {
 })
 router.post('/register', userController.addUser)
 router.post('/login', userController.loginUser)
+router.post('/update_niveau', niveauController.update)
 
 router.get('/login',(req, res) => {
     res.render("login",{error:{}});
 })
 router.get("/logout",auth, userController.logout)
-
+router.get("/niveaux",auth, niveauController.dislpayNiveaux)
+router.get("/sujets",auth, sujetController.dislpaySujets)
+router.post("/nouveau_sujet",auth, sujetController.add)
+router.post("/update_sujet",auth, sujetController.update)
 router.get('/admin_dashboard',auth,(req, res) => {
     res.render("admin_dashboard");
 })

@@ -1,0 +1,91 @@
+<%- include('header'); -%>
+<div class="container">
+    <div class="mt-4 d-flex justify-content-end">
+        <button type="button" class="btn btn-warning shadow-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">Nouveau</button>
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Nouveau Sujet</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form action="/nouveau_sujet" method="post" class="d-flex flex-column rounded ">
+                    <input type="text" name="intitule" id="intitule" class="form-control mb-4" placeholder="l'intitule de sujet">
+                    <div class="d-flex justify-content-end">
+                        <a href="#" class="btn text-warning border border-warning m-2" data-bs-dismiss="modal">Annuler</a>
+                        <button type="submit" class="btn btn-warning m-2 text-white">Enregistrer</button>
+                    </div>
+                </form>
+
+            </div>
+            </div>
+        </div>
+        </div> 
+    </div>
+    <% if(success){ %>
+        <div class="alert alert-success m-4" role="alert">
+            <%= success%>
+            </div>
+    <% } %>
+    <% if(error){ %>
+        <div class="alert alert-danger m-4" role="alert">
+            <%= error%>
+            </div>
+    <% } %>
+    <div class="shadow-sm mt-4 p-4">
+        <h2 class="mt-2">La liste des sujets</h2>
+        <table class="table table-hover mt-4">
+            <thead>
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">Sujet</th>
+                <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% sujets.forEach(function(sujet) { %>
+                    <tr>
+                        <th scope="row"><%= sujet.id %> </th>
+                        <td><%= sujet.intitule %></td>
+                        <td>
+                            <button type="button" class="btn btn-warning shadow-sm" data-bs-toggle="modal" data-bs-target="<%= '#edit_' + sujet.id %>"><i class="fas fa-edit"></i></button>
+                
+
+                            <div class="modal fade" id="<%= 'edit_' + sujet.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Modifier le sujet</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="/update_sujet" method="post" class="d-flex flex-column rounded p-4">
+                                        <input type="hidden" name="sujet_id" value="<%= sujet.id %>">
+                                        <input type="text" value ="<%= sujet.intitule %>" name="intitule" id="intitule" class="form-control mb-4">
+                                        <div class="d-flex justify-content-end">
+                                            <a href="#" class="btn text-warning border border-warning m-2" data-bs-dismiss="modal">Annuler</a>
+                                            <button type="submit" class="btn btn-warning m-2 text-white">Enregistrer</button>
+                                        </div>
+                                    </form>
+                
+                                </div>
+                                </div>
+                            </div>
+                            </div> 
+                        </td>
+                    </tr>
+                <% }); %> 
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    function addClass(){
+        document.querySelector('#sujets').className += " active";
+    }
+    addClass();
+</script>
+<%- include('footer'); -%>
