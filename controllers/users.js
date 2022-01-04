@@ -1,7 +1,7 @@
 const mysql = require("mysql");
 const bcrypt = require("bcrypt");
-
-const saltRounds = process.env.SALT_ROUNDS;
+require("dotenv").config();
+const saltRounds = Number(process.env.SALT_ROUNDS);
 
 const db = mysql.createConnection({
   host: process.env.HOST,
@@ -10,78 +10,106 @@ const db = mysql.createConnection({
   database: process.env.DATABASE,
 });
 
-exports.dislpayUsers = (req, res) => {
-  db.query("SELECT * FROM user", function (err, result, fields) {
+exports.dislpayFormateurs = (req, res) => {
+  db.query("SELECT * FROM user WHERE role = 'formateur'", function (err, result, fields) {
     if (err) throw err;
-    res.render("welcome", {
-      data: result,
+    res.render("formateurs", {
+      formateurs: result,
+      success:"",
+      error:""
     });
   });
 };
 
-exports.addUser = (req, res) => {
-  db.query(
-    "SELECT email FROM users WHERE email ='" + req.body.email + "'",
-    async function (err, result, fields) {
-      if (err) {
-        throw err;
-      }
-      if (results.length > 0) {
-        if (req.body.render_page == "formateurs") {
-          return res.render("formateurs", {
-            error: { message: "cet email est déjà utilisé" },
+exports.dislpayApprenants = (req, res) => {
+  db.query("SELECT * FROM user WHERE role = 'apprenant'", function (err, result, fields) {
+    if (err) throw err;
+    res.render("apprenants", {
+      apprenants: result,
+      success:"",
+      error:""
+    });
+  });
+};
+
+// function selectAll(role){
+//   db.query("SELECT * FROM user WHERE role = '" + role + "'", function (err, result, fields){
+//     return result;
+//   })
+// }
+
+exports.addUser = async (req, res) => {
+    db.query("SELECT email FROM user WHERE email ='" + req.body.email + "'",function (err, result, fields) {
+        if (err) {
+          throw err;
+        }
+        if (result.length > 0) {
+          if (req.body.role == "formateur") {
+            db.query("SELECT * FROM user WHERE role = 'formateur'", function (err, result, fields){
+              return res.render("formateurs", {
+                error:"cet email est déjà utilisé",
+                success:"",
+                formateurs: result
+              });
+            });
+          } else {
+              db.query("SELECT * FROM user WHERE role = 'apprenant'", function (err, result, fields){
+                return res.render("apprenants", {
+                  error:"cet email est déjà utilisé",
+                  success:"",
+                  apprenants: result
+                });
+              });
+          }
+        } 
+      });
+
+      if (req.body.password !== req.body.confirmPassword) {
+        if (req.body.role == "formateur") {
+          db.query("SELECT * FROM user WHERE role = 'formateur'", function (err, result, fields){
+            return res.render("formateurs", {
+              error:"Les mots de passe ne correspondent pas",
+              success:"",
+              formateurs: result
+            });
           });
         } else {
-          return res.render("apprenants", {
-            error: { message: "cet email est déjà utilisé" },
-          });
-        }
-      } else if (req.body.password !== req.body.confirmPassword) {
-        if (req.body.render_page == "formateurs") {
-          return res.render("formateurs", {
-            sucess: {},
-            error: { message: "Les mots de passe ne correspondent pas" },
-          });
-        } else {
-          return res.render("apprenants", {
-            sucess: {},
-            error: { message: "Les mots de passe ne correspondent pas" },
-          });
+            db.query("SELECT * FROM user WHERE role = 'apprenant'", function (err, result, fields){
+              return res.render("apprenants", {
+                error:"Les mots de passe ne correspondent pas",
+                success:"",
+                apprenants: result
+              });
+            })
         }
       }
-      const encryptedPassword = await bcrypt.hash(
-        req.body.password,
-        saltRounds
-      );
-      sql =
-        "INSERT INTO user (first_name, last_name, email, password,role) VALUES ('" +
-        req.body.first_name +
-        "', '" +
-        req.body.last_name +
-        "','" +
-        req.body.email +
-        "','" +
-        encryptedPassword +
-        "','" +
-        req.body.role +
-        "')";
-      db.query(sql, function (err, result, fields) {
+
+      const encryptedPassword = await bcrypt.hash(req.body.password,saltRounds);
+
+      sql = "INSERT INTO user (first_name, last_name, email, password,role) VALUES ('" + req.body.first_name + "', '" + req.body.last_name + "','" + req.body.email + "','" + encryptedPassword + "','" + req.body.role +"')";
+
+      db.query(sql, function  (err, result, fields) {
         if (err) throw err;
-        if (req.body.render_page == "formateurs") {
-          return res.render("formateurs", {
-            sucess: { message: "votre formateur a été ajouté avec succès " },
-            error: {},
-          });
+        if (req.body.role == "formateur") {
+          db.query("SELECT * FROM user WHERE role = 'formateur'", function (err, result, fields){
+            return res.render("formateurs", {
+              success:"votre formateur a été ajouté avec succès ",
+              error: "",
+              formateurs: result
+            });
+          })
         } else {
-          return res.render("apprenants", {
-            sucess: { message: "votre apprenant a été ajouté avec succès " },
-            error: {},
-          });
+          db.query("SELECT * FROM user WHERE role = 'apprenant'", function (err, result, fields){
+            return res.render("apprenants", {
+              success: "votre apprenant a été ajouté avec succès " ,
+              error: "",
+              apprenants: result
+            });
+          })
         }
       });
-    }
-  );
 };
+
 
 exports.loginUser = (req, res) => {
   var sql = "SELECT * FROM user WHERE email ='" + req.body.email + "'";
@@ -104,7 +132,6 @@ exports.loginUser = (req, res) => {
           res.redirect("formateur_dashboard");
         }
         if (result[0].role == "apprenant") {
-            console.log('din dimaak');
           res.redirect("/index_apprenant");
         }
       } else {
@@ -117,7 +144,6 @@ exports.loginUser = (req, res) => {
         error: { message: "email or password incorrect" },
       });
     }
-    // return result.length ? res.redirect('admin_dashboard'):res.render('login',{error:{message:'email or password incorrect'}});
   });
 };
 
